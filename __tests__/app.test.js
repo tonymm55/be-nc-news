@@ -3,6 +3,7 @@ const request = require("supertest");
 const testData = require("../db/data/test-data/index.js");
 const app = require("../app.js");
 const db = require("../db/connection.js");
+const expectedEndpoints = require("../endpoints.json");
 
 // console.log(process.env, "<<< process.env");
 
@@ -14,16 +15,6 @@ afterAll(() => {
   return db.end();
 });
 
-describe("/api", () => {
-  test("GET: 200 response", () => {
-    return request(app)
-      .get("/api")
-      .then((response) => {
-        console.log(response.body, "GET /api response");
-        expect(response.body).toEqual({ msg: "Hello World!" });
-      });
-  });
-});
 describe("GET /api/topics", () => {
   test("Responds with an array", () => {
     return request(app)
@@ -55,6 +46,17 @@ describe("GET /api/topics", () => {
       .then((response) => {
         console.log(response, "<<< response message");
         expect(response.body.msg).toBe("Route/endpoint not found");
+      });
+  });
+});
+describe("GET /api", () => {
+  test("Responds with a JSON object describing all the available endpoints.", () => {
+    return request(app)
+      .get("/api")
+      .then((response) => {
+        console.log(response.body, "<<< GET /api response");
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toEqual(expectedEndpoints);
       });
   });
 });
