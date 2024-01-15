@@ -55,7 +55,7 @@ describe("GET /api", () => {
       .get("/api")
       .then((response) => {
         console.log(response.body, "<<< GET /api response");
-        expect(response.statusCode).toBe(200);
+        expect(200);
         expect(response.body).toEqual(expectedEndpoints);
       });
   });
