@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 
 const { getAllTopics } = require("./controllers/topicsController");
+const { getAllArticles } = require("./controllers/articlesController");
+
 const { getSingleArticleById } = require("./controllers/articlesController");
 
 const allEndpoints = require("./endpoints.json");
@@ -13,6 +15,8 @@ app.get("/api", (req, res) => {
 });
 
 app.get("/api/topics", getAllTopics);
+app.get("/api/articles", getAllArticles);
+
 app.get("/api/articles/:article_id", getSingleArticleById);
 
 app.all("/*", (req, res) => {
@@ -30,7 +34,15 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
   if (err.msg === "Not Found") {
     res.status(404).send({ msg: err.msg });
+  } else {
+    next(err);
   }
+});
+
+app.use((err, req, res) => {
+  res.status(500).send({
+    msg: "Internal Server Error",
+  });
 });
 
 module.exports = app;

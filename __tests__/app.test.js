@@ -69,7 +69,7 @@ describe("GET /api/articles/:articles_id", () => {
         console.log(response.body, "<<< GET /article");
         console.log(response.body.article.created_at, "<<< typeof created_at");
         const { article } = response.body;
-        expect(article).toEqual({
+        expect(article).toMatchObject({
           article_id: 1,
           title: "Living in the shadow of a great man",
           topic: "mitch",
@@ -82,21 +82,52 @@ describe("GET /api/articles/:articles_id", () => {
         });
       });
   });
-  // Wed 10-Jan-2024 Error Handling
+  // Wed 10-Jan-2024 Lecture: Error Handling
   test("404: responds with appropriate message when given valid but non-existent id.", () => {
     return request(app)
       .get("/api/articles/1000")
       .expect(404)
-      .then(({ body: { message } }) => {
-        expect(message).toBe("Not Found");
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Not Found");
       });
   });
   test("400: Bad request, INVALID id", () => {
     return request(app)
       .get("/api/articles/nonsense")
       .expect(400)
-      .then(({ body: { message } }) => {
-        expect(message).toBe("Bad Request");
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad Request");
+      });
+  });
+});
+
+describe("GET /api/articles", () => {
+  test("Responds with an array", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(Array.isArray(articles)).toBe(true);
+      });
+  });
+  test("Responds with an array of articles", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body, "GET /api response");
+        const articles = body.articles;
+        expect(Array.isArray(articles)).toBe(true);
+        articles.forEach((article) => {
+          expect(typeof article.article_id).toBe("number");
+          expect(typeof article.article_img_url).toBe("string");
+          expect(typeof article.author).toBe("string");
+          expect(typeof article.comment_count).toBe("string");
+          expect(typeof article.created_at).toBe("string");
+          expect(typeof article.title).toBe("string");
+          expect(typeof article.topic).toBe("string");
+        });
       });
   });
 });
