@@ -9,11 +9,15 @@ const getAllArticles = (req, res) => {
   });
 };
 
-const getSingleArticle = (req, res) => {
+const getSingleArticleById = (req, res) => {
   const { article_id } = req.params;
-  fetchArticleById(article_id).then((article) => {
-    res.status(200).send({ article });
-  });
+  fetchArticleById(article_id)
+    .then((article) => {
+      res.status(200).send({ article });
+    })
+    .catch((err) => {
+      res.status(404).send({ message: err.message });
+    });
 };
 
-module.exports = { getAllArticles, getSingleArticle };
+module.exports = { getAllArticles, getSingleArticleById };

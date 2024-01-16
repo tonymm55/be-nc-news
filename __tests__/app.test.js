@@ -83,10 +83,12 @@ describe("GET /api/articles/:articles_id", () => {
       });
   });
   // Wed 10-Jan-2024 Error Handling
-  test("Endpoint not found.", () => {
+  test("404: responds with appropriate message when given valid but non-existent id.", () => {
     return request(app)
       .get("/api/articles/1000")
-      .expect(200)
-      .then((response) => {});
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("Not Found");
+      });
   });
 });
