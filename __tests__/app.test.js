@@ -100,3 +100,28 @@ describe("GET /api/articles/:articles_id", () => {
       });
   });
 });
+describe("GET /api/topics", () => {
+  test("Responds with an array", () => {
+    return request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then(({ body }) => {
+        const topics = body.topics;
+        expect(Array.isArray(topics)).toBe(true);
+      });
+  });
+  test("Responds with an array of topics with slug & description props", () => {
+    return request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then(({ body }) => {
+        // console.log(body, "GET /api response");
+        const topics = body.topics;
+        expect(topics).toEqual([
+          { slug: "mitch", description: "The man, the Mitch, the legend" },
+          { slug: "cats", description: "Not dogs" },
+          { slug: "paper", description: "what books are made of" },
+        ]);
+      });
+  });
+});
