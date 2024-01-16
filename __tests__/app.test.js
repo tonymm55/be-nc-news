@@ -91,4 +91,12 @@ describe("GET /api/articles/:articles_id", () => {
         expect(message).toBe("Not Found");
       });
   });
+  test("400: Bad request, INVALID id", () => {
+    return request(app)
+      .get("/api/articles/nonsense")
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("Bad Request");
+      });
+  });
 });
