@@ -34,7 +34,15 @@ app.use((err, req, res, next) => {
 app.use((err, req, res, next) => {
   if (err.msg === "Not Found") {
     res.status(404).send({ msg: err.msg });
+  } else {
+    next(err);
   }
+});
+
+app.use((err, req, res) => {
+  res.status(500).send({
+    msg: "Internal Server Error",
+  });
 });
 
 module.exports = app;

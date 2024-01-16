@@ -1,29 +1,38 @@
 const db = require("../db/connection");
 
-const fetchAllArticles = (sort_by = "slug") => {
-  // this is fully SQL-injection proof!
-  const validSortQueries = ["slug", "description"];
-  // const validOrderQueries = ["asc", "desc"];
-  if (!validSortQueries.includes(sort_by)) {
-    return Promise.reject({ status: 400, msg: "Invalid sort_by query" });
-  }
-  // if (!validOrderQueries.includes(order)) {
-  //   return Promise.reject({ status: 400, msg: "Invalid order query" });
-  // }
-  let query = `SELECT * FROM articles`;
-  return db.query(query).then((result) => {
-    return result.rows;
-  });
-};
-
 const fetchArticleById = (article_id) => {
   return db
     .query("SELECT * FROM articles WHERE article_id = $1", [article_id])
     .then(({ rows }) => {
       if (rows.length === 0) {
-        return Promise.reject({ message: "Not Found" });
+        return Promise.reject({ msg: "Not Found" });
       }
       return rows[0];
+    });
+};
+
+// Comment count subquery
+const fetchAllArticles = () => {
+  return db
+    .query(
+      `SELECT 
+        author, 
+        title,
+        article_id,
+        topic,
+        created_at,
+        votes,
+        article_img_url,
+        (SELECT COUNT(*) FROM comments WHERE comments.article_id = articles.article_id) AS comment_count
+        FROM articles
+        ORDER BY created_at DESC`
+    )
+    .then((result) => {
+      // Remove body property from each article object
+      return result.rows.map((article) => {
+        delete article.body;
+        return article;
+      });
     });
 };
 
