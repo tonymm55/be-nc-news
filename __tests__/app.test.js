@@ -100,14 +100,14 @@ describe("GET /api/articles/:articles_id", () => {
       });
   });
 });
-describe("GET /api/topics", () => {
+describe("GET /api/articles", () => {
   test("Responds with an array", () => {
     return request(app)
-      .get("/api/topics")
+      .get("/api/articles")
       .expect(200)
       .then(({ body }) => {
-        const topics = body.topics;
-        expect(Array.isArray(topics)).toBe(true);
+        const articles = body.articles;
+        expect(Array.isArray(articles)).toBe(true);
       });
   });
   test("Responds with an array of topics with slug & description props", () => {
