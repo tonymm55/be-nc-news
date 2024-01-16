@@ -6,15 +6,4 @@ const getAllTopics = (req, res) => {
   });
 };
 
-// const getAllTopics = (req, res, next) => {
-//   const { sort_by } = req.query;
-//   fetchAllTopics(sort_by)
-//     .then((allTopics) => {
-//       res.status(200).send(allTopics);
-//     })
-//     .catch((err) => {
-//       next(err);
-//     });
-// };
-
 module.exports = { getAllTopics };
