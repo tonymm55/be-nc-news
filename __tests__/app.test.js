@@ -66,8 +66,8 @@ describe("GET /api/articles/:articles_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then((response) => {
-        console.log(response.body, "<<< GET /article");
-        console.log(response.body.article.created_at, "<<< typeof created_at");
+        // console.log(response.body, "<<< GET /article");
+        // console.log(response.body.article.created_at, "<<< typeof created_at");
         const { article } = response.body;
         expect(article).toMatchObject({
           article_id: 1,
@@ -102,7 +102,7 @@ describe("GET /api/articles/:articles_id", () => {
 });
 
 describe("GET /api/articles", () => {
-  test("Responds with an array", () => {
+  test("Responds with an array of articles", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
@@ -116,7 +116,7 @@ describe("GET /api/articles", () => {
       .get("/api/articles")
       .expect(200)
       .then(({ body }) => {
-        console.log(body, "GET /api response");
+        // console.log(body, "<<< GET /api response");
         const articles = body.articles;
         expect(Array.isArray(articles)).toBe(true);
         articles.forEach((article) => {
@@ -127,6 +127,35 @@ describe("GET /api/articles", () => {
           expect(typeof article.created_at).toBe("string");
           expect(typeof article.title).toBe("string");
           expect(typeof article.topic).toBe("string");
+        });
+      });
+  });
+});
+
+describe("GET /api/articles/:article_id/comments", () => {
+  test("Responds with an array of comments", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body }) => {
+        // console.log(body.comments, "<<< comments response");
+        expect(Array.isArray(body.comments)).toBe(true);
+      });
+  });
+  test("Responds with an array of comments with the required properties", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body.comments, "<<< comments body");
+        const comments = body.comments;
+        comments.forEach((comment) => {
+          expect(comment).toHaveProperty("comment_id");
+          expect(comment).toHaveProperty("votes");
+          expect(comment).toHaveProperty("created_at");
+          expect(comment).toHaveProperty("author");
+          expect(comment).toHaveProperty("body");
+          expect(comment).toHaveProperty("article_id");
         });
       });
   });
