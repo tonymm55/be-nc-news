@@ -62,7 +62,6 @@ const fetchCommentsByArticleId = (article_id) => {
 };
 
 const insertCommentsByArticleId = (comments) => {
-  // const user = users.find((user) => user.username === comments.username);
   console.log(comments, "<<< insert comments");
   return db
     .query(
