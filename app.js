@@ -23,7 +23,6 @@ app.get("/api/articles/:article_id", getSingleArticleById);
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
 
 app.post("/api/articles/:article_id/comments", postCommentsByArticleId);
-// console.log("Hello World from app.js");
 
 app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Route/endpoint not found" });
@@ -47,6 +46,7 @@ app.use((err, req, res, next) => {
   }
 });
 
+// Last resort error handling
 app.use((err, req, res) => {
   res.status(500).send({
     msg: "Internal Server Error",
