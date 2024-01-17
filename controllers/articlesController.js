@@ -2,6 +2,7 @@ const {
   fetchAllArticles,
   fetchArticleById,
   fetchCommentsByArticleId,
+  insertCommentsByArticleId,
 } = require("../models/articlesModel");
 
 const getAllArticles = (req, res, next) => {
@@ -10,11 +11,6 @@ const getAllArticles = (req, res, next) => {
       res.status(200).send({ articles });
     })
     .catch((err) => {
-      // if (err.code === "22P02") {
-      //   res.status(400).send({ msg: "Bad Request" });
-      // } else {
-      //   res.status(404).send({ msg: err.msg });
-      // }
       console.error(err, "<<< error");
       next(err);
     });
@@ -46,8 +42,35 @@ const getCommentsByArticleId = (req, res, next) => {
     });
 };
 
+const postCommentsByArticleId = (req, res, next) => {
+  const { username, body } = req.body;
+  const article_id = req.params.article_id;
+  console.log(article_id, "<<< article_id");
+
+  const comments = {
+    username,
+    body,
+    article_id,
+  };
+  console.log(comments, "<<< comments object");
+
+  fetchArticleById(article_id)
+    .then(() => {
+      return insertCommentsByArticleId(comments);
+    })
+    .then((comment) => {
+      console.log(comment, "<<< insert comments");
+      res.status(201).send({ comment });
+    })
+    .catch((err) => {
+      console.error(err, "<<< error");
+      next(err);
+    });
+};
+
 module.exports = {
   getAllArticles,
   getSingleArticleById,
   getCommentsByArticleId,
+  postCommentsByArticleId,
 };
