@@ -10,6 +10,7 @@ const allEndpoints = require("./endpoints.json");
 
 app.use(express.json());
 
+// Routes - Endpoints
 app.get("/api", (req, res) => {
   res.status(200).send(allEndpoints);
 });
@@ -25,6 +26,7 @@ app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Route/endpoint not found" });
 });
 
+// Error Handling Middleware
 app.use((err, req, res, next) => {
   // handle all psql errors here
   if (err.code === "22P02") {
@@ -42,10 +44,10 @@ app.use((err, req, res, next) => {
   }
 });
 
-// app.use((err, req, res) => {
-//   res.status(500).send({
-//     msg: "Internal Server Error",
-//   });
-// });
+app.use((err, req, res) => {
+  res.status(500).send({
+    msg: "Internal Server Error",
+  });
+});
 
 module.exports = app;

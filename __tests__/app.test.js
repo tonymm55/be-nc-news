@@ -142,12 +142,28 @@ describe("GET /api/articles/:article_id/comments", () => {
         expect(Array.isArray(body.comments)).toBe(true);
       });
   });
+  test("404: responds with appropriate message when given valid but non-existent id.", () => {
+    return request(app)
+      .get("/api/articles/99999/comments")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Not Found");
+      });
+  });
+  test("400: Bad request, INVALID id", () => {
+    return request(app)
+      .get("/api/articles/invalid_id/comments")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad Request");
+      });
+  });
   test("Responds with an array of comments with the required properties", () => {
     return request(app)
       .get("/api/articles/1/comments")
       .expect(200)
       .then(({ body }) => {
-        console.log(body.comments, "<<< comments body");
+        // console.log(body.comments, "<<< comments body");
         const comments = body.comments;
         comments.forEach((comment) => {
           expect(comment).toHaveProperty("comment_id");

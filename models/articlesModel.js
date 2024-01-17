@@ -53,10 +53,11 @@ const fetchCommentsByArticleId = (article_id) => {
     )
     .then((result) => {
       // console.log("Query result >>> ", result);
+      if (result.rows.length === 0) {
+        console.log(result.rows.length, "<<< rows.length");
+        return Promise.reject({ msg: "Not Found" });
+      }
       return result.rows;
-    })
-    .catch((error) => {
-      console.error("Error content: ", error);
     });
 };
 
