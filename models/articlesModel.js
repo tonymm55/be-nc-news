@@ -36,4 +36,33 @@ const fetchAllArticles = () => {
     });
 };
 
-module.exports = { fetchArticleById, fetchAllArticles };
+const fetchCommentsByArticleId = (article_id) => {
+  // console.log("function is called with article_id >>> ", article_id);
+  return db
+    .query(
+      `SELECT 
+        comment_id, 
+        votes,
+        created_at,
+        author,
+        body,
+        article_id
+        FROM comments WHERE article_id = $1
+        ORDER BY created_at DESC`,
+      [article_id]
+    )
+    .then((result) => {
+      // console.log("Query result >>> ", result);
+      if (result.rows.length === 0) {
+        console.log(result.rows.length, "<<< rows.length");
+        return Promise.reject({ msg: "Not Found" });
+      }
+      return result.rows;
+    });
+};
+
+module.exports = {
+  fetchArticleById,
+  fetchAllArticles,
+  fetchCommentsByArticleId,
+};
