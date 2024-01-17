@@ -176,3 +176,54 @@ describe("GET /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("Responds with the posted comment", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({
+        username: "icellusedkars",
+        body: "Even a broken clock is right twice a day.",
+      })
+      .expect(201)
+      .then((response) => {
+        console.log(response.body, "<<< comments response");
+        expect(response.body).toEqual({
+          comment: "Even a broken clock is right twice a day.",
+        });
+      });
+  });
+  test("404: responds with appropriate message when given valid but non-existent id.", () => {
+    return request(app)
+      .post("/api/articles/999/comments")
+      .send({
+        username: "icellusedkars",
+        body: "A broken clock has the number 999.",
+      })
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Not Found");
+      });
+  });
+  test("400: Bad request, INVALID id", () => {
+    return request(app)
+      .post("/api/articles/invalid_id/comments")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad Request");
+      });
+  });
+  test("Responds with required properties", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({
+        username: "icellusedkars",
+        body: "Even a broken clock is right twice a day.",
+      })
+      .expect(201)
+      .then((response) => {
+        console.log(response.body, "<<< response");
+        expect(response.body).toHaveProperty("comment");
+      });
+  });
+});

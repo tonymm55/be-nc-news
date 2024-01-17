@@ -10,8 +10,7 @@ const fetchAllTopics = (sort_by = "slug") => {
   // if (!validOrderQueries.includes(order)) {
   //   return Promise.reject({ status: 400, msg: "Invalid order query" });
   // }
-  let query = `SELECT * FROM topics`;
-  return db.query(query).then((result) => {
+  return db.query(`SELECT * FROM topics`).then((result) => {
     return result.rows;
   });
 };

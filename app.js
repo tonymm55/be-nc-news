@@ -5,6 +5,7 @@ const { getAllTopics } = require("./controllers/topicsController");
 const { getAllArticles } = require("./controllers/articlesController");
 const { getSingleArticleById } = require("./controllers/articlesController");
 const { getCommentsByArticleId } = require("./controllers/articlesController");
+const { postCommentsByArticleId } = require("./controllers/articlesController");
 
 const allEndpoints = require("./endpoints.json");
 
@@ -20,7 +21,8 @@ app.get("/api/articles", getAllArticles);
 
 app.get("/api/articles/:article_id", getSingleArticleById);
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
-// console.log("Hello World from app.js");
+
+app.post("/api/articles/:article_id/comments", postCommentsByArticleId);
 
 app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Route/endpoint not found" });
@@ -44,6 +46,7 @@ app.use((err, req, res, next) => {
   }
 });
 
+// Last resort error handling
 app.use((err, req, res) => {
   res.status(500).send({
     msg: "Internal Server Error",
