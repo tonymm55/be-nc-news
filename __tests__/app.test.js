@@ -425,4 +425,18 @@ describe("GET /api/articles By Topic Query", () => {
         });
       });
   });
+  test("Responds with all articles if no topic", () => {
+    const topic = "";
+    return request(app)
+      .get(`/api/articles?topic=${topic}`)
+      .expect(200)
+      .then((response) => {
+        response.body.articles.forEach((article) => {
+          console.log(response.body.articles);
+        });
+        expect(
+          response.body.articles.every((article) => article.topic !== topic)
+        ).toBe(true);
+      });
+  });
 });
