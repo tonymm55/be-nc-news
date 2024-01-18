@@ -5,6 +5,7 @@ const {
   insertCommentsByArticleId,
   updateArticleByArticleId,
   removeCommentByCommentId,
+  fetchAllUsers,
 } = require("../models/articlesModel");
 
 const getAllArticles = (req, res, next) => {
@@ -105,6 +106,17 @@ const deleteCommentByCommentId = (req, res, next) => {
     });
 };
 
+const getAllUsers = (req, res, next) => {
+  fetchAllUsers()
+    .then((users) => {
+      res.status(200).send({ users });
+    })
+    .catch((err) => {
+      console.error(err, "<<< error");
+      next(err);
+    });
+};
+
 module.exports = {
   getAllArticles,
   getArticleById,
@@ -112,4 +124,5 @@ module.exports = {
   postCommentsByArticleId,
   patchArticleByArticleId,
   deleteCommentByCommentId,
+  getAllUsers,
 };

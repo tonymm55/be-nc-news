@@ -41,7 +41,7 @@ describe("GET /api/topics", () => {
   });
   test("404: Responds with 404 with invalid route/endpoint/path", () => {
     return request(app)
-      .get("/api/toptrumps")
+      .get("/api/topicks")
       .expect(404)
       .then((response) => {
         // console.log(response, "<<< response message");
@@ -112,14 +112,13 @@ describe("GET /api/articles", () => {
         expect(Array.isArray(articles)).toBe(true);
       });
   });
-  test("Responds with an array of articles", () => {
+  test("Responds with an array of correct data types", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
       .then(({ body }) => {
         // console.log(body, "<<< GET /api response");
         const articles = body.articles;
-        expect(Array.isArray(articles)).toBe(true);
         articles.forEach((article) => {
           expect(typeof article.article_id).toBe("number");
           expect(typeof article.article_img_url).toBe("string");
@@ -346,6 +345,48 @@ describe("DELETE /api/comments/:comments_id", () => {
       .expect(400)
       .then(({ body: { msg } }) => {
         expect(msg).toBe("Bad Request");
+      });
+  });
+});
+
+describe("GET /api/users", () => {
+  test("Responds with an array of users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        const users = body.users;
+        expect(Array.isArray(users)).toBe(true);
+      });
+  });
+  test("Responds with an array of users with correct data types", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body, "<<< GET /api body");
+        const users = body.users;
+        users.forEach((user) => {
+          expect(typeof user.username).toBe("string");
+          expect(typeof user.name).toBe("string");
+          expect(typeof user.avatar_url).toBe("string");
+        });
+      });
+  });
+  test("Responds with an array of users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        const users = body.users[0];
+        expect([users]).toEqual([
+          {
+            avatar_url:
+              "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+            name: "paul",
+            username: "rogersop",
+          },
+        ]);
       });
   });
 });

@@ -126,5 +126,18 @@
     "description": "serves a status 204 and no content",
     "queries": ["comment_id"],
     "exampleResponses": ["204", "404: Not Found"]
+  },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": ["username", "name", "avatar_url"],
+    "exampleResponse": {
+      "users": [
+        {
+          "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+          "name": "jonny",
+          "username": "butter_bridge"
+        }
+      ]
+    }
   }
 }
