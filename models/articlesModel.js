@@ -103,6 +103,24 @@ const removeCommentByCommentId = (comment_id) => {
     });
 };
 
+const fetchAllUsers = () => {
+  return db
+    .query(
+      `SELECT 
+        username, 
+        name,
+        avatar_url
+        FROM users
+        ORDER BY username DESC`
+    )
+    .then((result) => {
+      // Remove body property from each article object
+      return result.rows.map((users) => {
+        return users;
+      });
+    });
+};
+
 module.exports = {
   fetchArticleById,
   fetchAllArticles,
@@ -110,4 +128,5 @@ module.exports = {
   insertCommentsByArticleId,
   updateArticleByArticleId,
   removeCommentByCommentId,
+  fetchAllUsers,
 };
