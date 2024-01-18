@@ -4,6 +4,7 @@ const {
   fetchCommentsByArticleId,
   insertCommentsByArticleId,
   updateArticleByArticleId,
+  removeCommentByCommentId,
 } = require("../models/articlesModel");
 
 const getAllArticles = (req, res, next) => {
@@ -17,7 +18,7 @@ const getAllArticles = (req, res, next) => {
     });
 };
 
-const getSingleArticleById = (req, res, next) => {
+const getArticleById = (req, res, next) => {
   const { article_id } = req.params;
   fetchArticleById(article_id)
     .then((article) => {
@@ -75,12 +76,6 @@ const patchArticleByArticleId = (req, res, next) => {
   console.log(article_id, "<<< article_id");
   console.log(req.body, "<<< req.body.inc_votes");
 
-  // const votes = {
-  //   article_id,
-  //   inc_votes,
-  // };
-  // console.log(votes, "<<< votes object");
-
   fetchArticleById(article_id)
     .then(() => {
       return updateArticleByArticleId(article_id, inc_votes);
@@ -95,10 +90,26 @@ const patchArticleByArticleId = (req, res, next) => {
     });
 };
 
+const deleteCommentByCommentId = (req, res, next) => {
+  const { comment_id } = req.params;
+  console.log(comment_id, "<<< About to call removeCommentByCommentId");
+  removeCommentByCommentId(comment_id)
+    .then(() => {
+      console.log(comment_id, "<<< Successfully removed comment");
+      res.status(204).end();
+    })
+    .catch((err) => {
+      console.error("Failed to remove comment", err);
+      console.error(err, "<<< error");
+      next(err);
+    });
+};
+
 module.exports = {
   getAllArticles,
-  getSingleArticleById,
+  getArticleById,
   getCommentsByArticleId,
   postCommentsByArticleId,
   patchArticleByArticleId,
+  deleteCommentByCommentId,
 };

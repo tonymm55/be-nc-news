@@ -87,10 +87,27 @@ const updateArticleByArticleId = (article_id, inc_votes) => {
     });
 };
 
+const removeCommentByCommentId = (comment_id) => {
+  console.log(comment_id, "<<< insert comment_id");
+  return db
+    .query(`DELETE FROM comments WHERE comment_id = $1 RETURNING *`, [
+      comment_id,
+    ])
+    .then((result) => {
+      if (result.rowCount === 0) {
+        console.log(result.rowCount, "<<< result.rowCount");
+        console.log(result, "<<< result");
+        return Promise.reject({ msg: "Not Found" });
+      }
+      return result.rows[0];
+    });
+};
+
 module.exports = {
   fetchArticleById,
   fetchAllArticles,
   fetchCommentsByArticleId,
   insertCommentsByArticleId,
   updateArticleByArticleId,
+  removeCommentByCommentId,
 };

@@ -3,10 +3,13 @@ const app = express();
 
 const { getAllTopics } = require("./controllers/topicsController");
 const { getAllArticles } = require("./controllers/articlesController");
-const { getSingleArticleById } = require("./controllers/articlesController");
+const { getArticleById } = require("./controllers/articlesController");
 const { getCommentsByArticleId } = require("./controllers/articlesController");
 const { postCommentsByArticleId } = require("./controllers/articlesController");
 const { patchArticleByArticleId } = require("./controllers/articlesController");
+const {
+  deleteCommentByCommentId,
+} = require("./controllers/articlesController");
 
 const allEndpoints = require("./endpoints.json");
 
@@ -19,12 +22,11 @@ app.get("/api", (req, res) => {
 
 app.get("/api/topics", getAllTopics);
 app.get("/api/articles", getAllArticles);
-
-app.get("/api/articles/:article_id", getSingleArticleById);
+app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
-
 app.post("/api/articles/:article_id/comments", postCommentsByArticleId);
 app.patch("/api/articles/:article_id", patchArticleByArticleId);
+app.delete("/api/comments/:comment_id", deleteCommentByCommentId);
 
 app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Route/endpoint not found" });
