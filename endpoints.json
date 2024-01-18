@@ -121,5 +121,10 @@
         }
       ]
     }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "serves a status 204 and no content",
+    "queries": ["comment_id"],
+    "exampleResponses": ["204", "404: Not Found"]
   }
 }

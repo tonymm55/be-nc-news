@@ -60,6 +60,7 @@ describe("GET /api", () => {
       });
   });
 });
+
 describe("GET /api/articles/:articles_id", () => {
   test("Responds with the appropriate article.", () => {
     return request(app)
@@ -322,6 +323,29 @@ describe("PATCH /api/articles/:article_id", () => {
       .then((response) => {
         console.log(response.body.article[0], "<<< response");
         expect(response.body.article[0]).toHaveProperty("votes");
+      });
+  });
+});
+
+describe("DELETE /api/comments/:comments_id", () => {
+  test("Responds with status 204 and no content.", () => {
+    return request(app).delete("/api/comments/1").expect(204);
+  });
+  // Wed 10-Jan-2024 Lecture: Error Handling
+  test("404: responds with appropriate message when given valid but non-existent id.", () => {
+    return request(app)
+      .delete("/api/comments/999")
+      .expect(404)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Not Found");
+      });
+  });
+  test("400: Bad request, INVALID id", () => {
+    return request(app)
+      .delete("/api/comments/nonsense")
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad Request");
       });
   });
 });
