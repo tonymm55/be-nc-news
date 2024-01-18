@@ -74,9 +74,23 @@ const insertCommentsByArticleId = (comments) => {
     });
 };
 
+const updateArticleByArticleId = (article_id, inc_votes) => {
+  console.log(article_id, inc_votes, "<<< article_id, inc_votes");
+  return db
+    .query(
+      `UPDATE articles SET votes = votes + $1 WHERE article_id =$2 RETURNING *`,
+      [inc_votes, article_id]
+    )
+    .then((result) => {
+      console.log(result.rows, "<<< update votes, (result.rows)");
+      return result.rows;
+    });
+};
+
 module.exports = {
   fetchArticleById,
   fetchAllArticles,
   fetchCommentsByArticleId,
   insertCommentsByArticleId,
+  updateArticleByArticleId,
 };
