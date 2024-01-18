@@ -114,7 +114,6 @@ const fetchAllUsers = () => {
         ORDER BY username DESC`
     )
     .then((result) => {
-      // Remove body property from each article object
       return result.rows.map((users) => {
         return users;
       });
