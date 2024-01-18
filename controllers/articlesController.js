@@ -59,9 +59,9 @@ const postCommentsByArticleId = (req, res, next) => {
     .then(() => {
       return insertCommentsByArticleId(comments);
     })
-    .then((comment) => {
+    .then((postedComment) => {
       // console.log(comment, "<<< insert comments");
-      res.status(201).send({ comment });
+      res.status(201).send({ postedComment });
     })
     .catch((err) => {
       // console.error(err, "<<< error");
@@ -75,10 +75,11 @@ const patchArticleByArticleId = (req, res, next) => {
   console.log(article_id, "<<< article_id");
   console.log(req.body, "<<< req.body.inc_votes");
 
-  const votes = {
-    inc_votes,
-  };
-  console.log(votes, "<<< votes object");
+  // const votes = {
+  //   article_id,
+  //   inc_votes,
+  // };
+  // console.log(votes, "<<< votes object");
 
   fetchArticleById(article_id)
     .then(() => {

@@ -189,7 +189,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       .then((response) => {
         console.log(response.body, "<<< comments response");
         expect(response.body).toEqual({
-          comment: "Even a broken clock is right twice a day.",
+          postedComment: "Even a broken clock is right twice a day.",
         });
       });
   });
@@ -223,7 +223,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       .expect(201)
       .then((response) => {
         console.log(response.body, "<<< response");
-        expect(response.body).toHaveProperty("comment");
+        expect(response.body).toHaveProperty("postedComment");
       });
   });
 });
