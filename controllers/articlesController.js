@@ -9,12 +9,14 @@ const {
 } = require("../models/articlesModel");
 
 const getAllArticles = (req, res, next) => {
-  fetchAllArticles()
+  const { topic } = req.query;
+  console.log("Topic:", topic);
+  fetchAllArticles(topic)
     .then((articles) => {
       res.status(200).send({ articles });
     })
     .catch((err) => {
-      console.error(err, "<<< error");
+      // console.error(err, "<<< error");
       next(err);
     });
 };
@@ -26,7 +28,7 @@ const getArticleById = (req, res, next) => {
       res.status(200).send({ article });
     })
     .catch((err) => {
-      console.error(err, "<<< error");
+      // console.error(err, "<<< error");
       next(err);
     });
 };
@@ -40,7 +42,7 @@ const getCommentsByArticleId = (req, res, next) => {
       res.status(200).send({ comments });
     })
     .catch((err) => {
-      console.error(err, "<<< error");
+      // console.error(err, "<<< error");
       next(err);
     });
 };
@@ -74,34 +76,34 @@ const postCommentsByArticleId = (req, res, next) => {
 const patchArticleByArticleId = (req, res, next) => {
   const { inc_votes } = req.body;
   const article_id = req.params.article_id;
-  console.log(article_id, "<<< article_id");
-  console.log(req.body, "<<< req.body.inc_votes");
+  // console.log(article_id, "<<< article_id");
+  // console.log(req.body, "<<< req.body.inc_votes");
 
   fetchArticleById(article_id)
     .then(() => {
       return updateArticleByArticleId(article_id, inc_votes);
     })
     .then((article) => {
-      console.log(article, "<<< article with updated votes");
+      // console.log(article, "<<< article with updated votes");
       res.status(201).send({ article });
     })
     .catch((err) => {
-      console.error(err, "<<< error");
+      // console.error(err, "<<< error");
       next(err);
     });
 };
 
 const deleteCommentByCommentId = (req, res, next) => {
   const { comment_id } = req.params;
-  console.log(comment_id, "<<< About to call removeCommentByCommentId");
+  // console.log(comment_id, "<<< About to call removeCommentByCommentId");
   removeCommentByCommentId(comment_id)
     .then(() => {
-      console.log(comment_id, "<<< Successfully removed comment");
+      // console.log(comment_id, "<<< Successfully removed comment");
       res.status(204).end();
     })
     .catch((err) => {
-      console.error("Failed to remove comment", err);
-      console.error(err, "<<< error");
+      // console.error("Failed to remove comment", err);
+      // console.error(err, "<<< error");
       next(err);
     });
 };
@@ -112,7 +114,7 @@ const getAllUsers = (req, res, next) => {
       res.status(200).send({ users });
     })
     .catch((err) => {
-      console.error(err, "<<< error");
+      // console.error(err, "<<< error");
       next(err);
     });
 };

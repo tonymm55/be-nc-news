@@ -187,7 +187,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       })
       .expect(201)
       .then((response) => {
-        console.log(response.body, "<<< comments response");
+        // console.log(response.body, "<<< comments response");
         expect(response.body).toEqual({
           postedComment: "Even a broken clock is right twice a day.",
         });
@@ -222,7 +222,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       })
       .expect(201)
       .then((response) => {
-        console.log(response.body, "<<< response");
+        // console.log(response.body, "<<< response(225)");
         expect(response.body).toHaveProperty("postedComment");
       });
   });
@@ -237,7 +237,7 @@ describe("PATCH /api/articles/:article_id", () => {
       })
       .expect(201)
       .then((response) => {
-        console.log(response.body.article[0], "<<< test response");
+        // console.log(response.body.article[0], "<<< test response");
         expect(response.body.article[0]).toMatchObject({
           article_id: 1,
           title: "Living in the shadow of a great man",
@@ -259,7 +259,7 @@ describe("PATCH /api/articles/:article_id", () => {
       })
       .expect(201)
       .then((response) => {
-        console.log(response.body.article[0], "<<< test response");
+        // console.log(response.body.article[0], "<<< test response");
         expect(response.body.article[0]).toMatchObject({
           article_id: 1,
           title: "Living in the shadow of a great man",
@@ -320,7 +320,7 @@ describe("PATCH /api/articles/:article_id", () => {
       })
       .expect(201)
       .then((response) => {
-        console.log(response.body.article[0], "<<< response");
+        // console.log(response.body.article[0], "<<< response");
         expect(response.body.article[0]).toHaveProperty("votes");
       });
   });
@@ -364,7 +364,7 @@ describe("GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
-        console.log(body, "<<< GET /api body");
+        // console.log(body, "<<< GET /api body");
         const users = body.users;
         users.forEach((user) => {
           expect(typeof user.username).toBe("string");
@@ -387,6 +387,42 @@ describe("GET /api/users", () => {
             username: "rogersop",
           },
         ]);
+      });
+  });
+});
+
+describe("GET /api/articles By Topic Query", () => {
+  test("Responds articles of a specific topic (cats)", () => {
+    const topic = "cats";
+    return request(app)
+      .get(`/api/articles?topic=${topic}`)
+      .expect(200)
+      .then((response) => {
+        response.body.articles.forEach((article) => {
+          console.log(article.topic, "<<< article topic");
+        });
+        expect(
+          response.body.articles.every((article) => article.topic === topic)
+        ).toBe(true);
+      });
+  });
+  test("Responds with an array of correct data types", () => {
+    const topic = "cats";
+    return request(app)
+      .get(`/api/articles?topic=${topic}`)
+      .expect(200)
+      .then(({ body }) => {
+        // console.log(body, "<<< GET /api response");
+        const articles = body.articles;
+        articles.forEach((article) => {
+          expect(typeof article.article_id).toBe("number");
+          expect(typeof article.article_img_url).toBe("string");
+          expect(typeof article.author).toBe("string");
+          expect(typeof article.comment_count).toBe("string");
+          expect(typeof article.created_at).toBe("string");
+          expect(typeof article.title).toBe("string");
+          expect(typeof article.topic).toBe("string");
+        });
       });
   });
 });
