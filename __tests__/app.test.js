@@ -67,7 +67,7 @@ describe("GET /api/articles/:articles_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then((response) => {
-        // console.log(response.body, "<<< GET /article");
+        console.log(response.body, "<<< GET /article");
         // console.log(response.body.article.created_at, "<<< typeof created_at");
         const { article } = response.body;
         expect(article).toMatchObject({
@@ -444,6 +444,29 @@ describe("GET /api/articles By Topic Query", () => {
         );
         expect(response.body.articles).not.toBeNull();
         expect(Array.isArray(response.body.articles)).toBe(true);
+      });
+  });
+});
+describe("GET /api/articles/:articles_id", () => {
+  test("Responds with article including comment count feature.", () => {
+    return request(app)
+      .get("/api/articles/5")
+      .expect(200)
+      .then((response) => {
+        console.log(response.body, "<<< article with comment count");
+        const { article } = response.body;
+        expect(article).toMatchObject({
+          author: "rogersop",
+          body: "Bastet walks amongst us, and the cats are taking arms!",
+          title: "UNCOVERED: catspiracy to bring down democracy",
+          article_id: 5,
+          topic: "cats",
+          created_at: "2020-08-03T13:14:00.000Z",
+          votes: 0,
+          article_img_url:
+            "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+          comment_count: "2",
+        });
       });
   });
 });
