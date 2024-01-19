@@ -47,3 +47,9 @@ Create two `.env` files in the project root folder: `.env.test` and `.env.develo
 PGDATABASE=your_database_name
 
 Ensure that these files are added to your `.gitignore` file to avoid committing sensitive and private information.
+
+### Environment Minimum Version Requirements
+
+The minimum versions required of Node.js and Postgres to run the project:
+Node.js (v20.1.0),
+PostgreSQL 16.1 on aarch64-apple-darwin21.6.0, compiled by Apple clang version 14.0.0 (clang-1400.0.29.102), 64-bit
