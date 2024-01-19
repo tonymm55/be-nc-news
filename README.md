@@ -28,7 +28,17 @@ PostgreSQL database is hosted on ElephantSQL (PostgreSQL as a Service) https://w
 
 ## Getting Started
 
-...
+Fork the repo in GitHub and clone using the git clone <filename> command in your terminal. CD into the file you have created and run the following commands:
+
+install node package manager:
+install node-postgres: $ npm install pg
+install jest
+install supertest
+
+To test run the terminal command: npm test
+psql
+\c nc_news OR \c nc_news_test
+SELECT * from articles/comments/topics/users to check the database connection
 
 ### Environment Variables
 
