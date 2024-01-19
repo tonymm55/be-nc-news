@@ -10,14 +10,14 @@ The database is PostgreSQL (PSQL), and interaction with it is carried out using 
 
 The project was separated into tasks that required the building of multiple endpoints that made use of Create Read Update and Delete (CRUD) operations. Endpoints are listed below with the names of the functions passed in as arguments.
 
-app.get("/api/topics", getAllTopics);
-app.get("/api/articles", getAllArticles);
-app.get("/api/articles/:article_id", getArticleById);
-app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
-app.post("/api/articles/:article_id/comments", postCommentsByArticleId);
-app.patch("/api/articles/:article_id", patchArticleByArticleId);
-app.delete("/api/comments/:comment_id", deleteCommentByCommentId);
-app.get("/api/users", getAllUsers);
+* app.get("/api/topics", getAllTopics);
+* app.get("/api/articles", getAllArticles);
+* app.get("/api/articles/:article_id", getArticleById);
+* app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
+* app.post("/api/articles/:article_id/comments", postCommentsByArticleId);
+* app.patch("/api/articles/:article_id", patchArticleByArticleId);
+* app.delete("/api/comments/:comment_id", deleteCommentByCommentId);
+* app.get("/api/users", getAllUsers);
 
 The project also reinforced GitHub learning by making use of git branching and pull requests for code reviews. Merging of pull requests into the main branch was also performed.
 
