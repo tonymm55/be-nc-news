@@ -432,11 +432,18 @@ describe("GET /api/articles By Topic Query", () => {
       .expect(200)
       .then((response) => {
         response.body.articles.forEach((article) => {
-          console.log(response.body.articles);
+          console.log(response.body.articles, "<<< no topic");
         });
         expect(
-          response.body.articles.every((article) => article.topic !== topic)
+          response.body.articles.every((article) => article.topic !== "")
         ).toBe(true);
+        expect(
+          response.body.articles.forEach((article) => {
+            expect(typeof article.topic).toBe("string");
+          })
+        );
+        expect(response.body.articles).not.toBeNull();
+        expect(Array.isArray(response.body.articles)).toBe(true);
       });
   });
 });
