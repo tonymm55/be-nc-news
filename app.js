@@ -1,3 +1,4 @@
+const cors = require("cors");
 const express = require("express");
 const app = express();
 
@@ -15,6 +16,7 @@ const {
 
 const allEndpoints = require("./endpoints.json");
 
+app.use(cors());
 app.use(express.json());
 
 // Routes - Endpoints
