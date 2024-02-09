@@ -226,6 +226,19 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(response.body).toHaveProperty("postedComment");
       });
   });
+  // Added FEB '24 during FE, testing POST request with comments!
+  xtest("400: Bad request, EMPTY body", () => {
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send({
+        username: "icellusedkars",
+        body: "", // Empty body
+      })
+      .expect(400)
+      .then(({ body: { msg } }) => {
+        expect(msg).toBe("Bad Request");
+      });
+  });
 });
 
 describe("PATCH /api/articles/:article_id", () => {

@@ -7,9 +7,7 @@ const fetchAllTopics = (sort_by = "slug") => {
   if (!validSortQueries.includes(sort_by)) {
     return Promise.reject({ status: 400, msg: "Invalid sort_by query" });
   }
-  // if (!validOrderQueries.includes(order)) {
-  //   return Promise.reject({ status: 400, msg: "Invalid order query" });
-  // }
+
   return db.query(`SELECT * FROM topics`).then((result) => {
     return result.rows;
   });

@@ -25,7 +25,6 @@ const fetchArticleById = (article_id) => {
     });
 };
 
-// Comment count subquery
 const fetchAllArticles = (topic) => {
   let query = `SELECT 
         author, 
@@ -57,7 +56,6 @@ const fetchAllArticles = (topic) => {
 };
 
 const fetchCommentsByArticleId = (article_id) => {
-  // console.log("function is called with article_id >>> ", article_id);
   return db
     .query(
       `SELECT 
@@ -72,9 +70,7 @@ const fetchCommentsByArticleId = (article_id) => {
       [article_id]
     )
     .then((result) => {
-      // console.log("Query result >>> ", result);
       if (result.rows.length === 0) {
-        // console.log(result.rows.length, "<<< rows.length");
         return Promise.reject({ msg: "Not Found" });
       }
       return result.rows;
@@ -82,41 +78,34 @@ const fetchCommentsByArticleId = (article_id) => {
 };
 
 const insertCommentsByArticleId = (comments) => {
-  // console.log(comments, "<<< insert comments");
   return db
     .query(
       `INSERT INTO comments (author, body, article_id) VALUES ($1, $2, $3) RETURNING *`,
       [comments.username, comments.body, comments.article_id]
     )
     .then((result) => {
-      // console.log(result.rows[0].body, "<<< insert result.rows[0].body");
       return result.rows[0].body;
     });
 };
 
 const updateArticleByArticleId = (article_id, inc_votes) => {
-  // console.log(article_id, inc_votes, "<<< article_id, inc_votes");
   return db
     .query(
       `UPDATE articles SET votes = votes + $1 WHERE article_id =$2 RETURNING *`,
       [inc_votes, article_id]
     )
     .then((result) => {
-      // console.log(result.rows, "<<< update votes, (result.rows)");
       return result.rows;
     });
 };
 
 const removeCommentByCommentId = (comment_id) => {
-  // console.log(comment_id, "<<< insert comment_id");
   return db
     .query(`DELETE FROM comments WHERE comment_id = $1 RETURNING *`, [
       comment_id,
     ])
     .then((result) => {
       if (result.rowCount === 0) {
-        // console.log(result.rowCount, "<<< result.rowCount");
-        // console.log(result, "<<< result");
         return Promise.reject({ msg: "Not Found" });
       }
       return result.rows[0];
